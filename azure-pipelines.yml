@@ -1,22 +1,19 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+#Your build pipeline references an undefined variable named ‘BUILDCONFIGURATION’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘BUILDPLATFORM’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+name: $(BuildDefinitionName)_$(date:yyMM).$(date:dd)$(rev:rr)
 
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+variables:
+  ArtifactName: 'NXT3Shift_Artifacts'
+  solution: '**/*.sln'
+  buildPlatform: 'x64'
+  buildConfiguration: 'Debug'
 
 steps:
-- task: Maven@3
+- task: PackageES.pkges-vpack-task.pkges-vpack-task.PkgESVPack@12
+  displayName: 'PkgESVPack '
   inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    sourceDirectory: '$(Build.ArtifactStagingDirectory)'
+    description: '$(ArtifactName).$(buildConfiguration).$(buildPlatform)'
