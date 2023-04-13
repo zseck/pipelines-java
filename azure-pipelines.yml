@@ -23,3 +23,11 @@ steps:
   inputs:
     targetPath: $(XES_VPACKMANIFESTDIRECTORY)
     artifactName: $(ArtifactName).$(buildConfiguration).$(buildPlatform)
+
+- task: PkgESFCIBGit@12
+  displayName: 'Package ES - Submit Files to Git'
+  inputs:
+    configPath: 'GitCheckinConfigs/GitCheckin.json'
+    artifactsDirectory: '$(Build.ArtifactStagingDirectory)'
+    prTimeOut: 5
+    paToken: '$(patRef)'
