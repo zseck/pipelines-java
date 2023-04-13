@@ -17,3 +17,9 @@ steps:
   inputs:
     sourceDirectory: '$(Build.ArtifactStagingDirectory)'
     description: '$(ArtifactName).$(buildConfiguration).$(buildPlatform)'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Copy VPack Manifest to Drop'
+  inputs:
+    targetPath: $(XES_VPACKMANIFESTDIRECTORY)
+    artifactName: $(ArtifactName).$(buildConfiguration).$(buildPlatform)
